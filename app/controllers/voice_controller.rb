@@ -8,12 +8,12 @@ class VoiceController < ApplicationController
   def start
     response = Twilio::TwiML::Response.new do |response|
       # check if window, buzz in if so
-      # else prompty for code
-      # let them get patched through to Will's cell
 
-      response.Gather :numDigits => '4', :action => check_voice_path, :method => 'get' do |g|
+      # else prompt for code
+      response.Gather(numDigits: '4', timeout: '10', action: check_voice_path, method: 'get') do |g|
         g.Say 'Please enter your four digit code', voice: 'alice'
       end
+      response.Redirect(real_human_path, method: 'get') # let them get patched through to Will's cell
     end
 
     render_twiml response
@@ -23,6 +23,14 @@ class VoiceController < ApplicationController
     return redirect_to start_voice_path unless params['Digits'] == "1234"
     response = Twilio::TwiML::Response.new do |response|
       response.Play(digits:"wwww99999")
+    end
+
+    render_twiml response
+  end
+
+  def real_human
+    response = Twilio::TwiML::Response.new do |response|
+      response.Dial("415-894-9455")
     end
 
     render_twiml response

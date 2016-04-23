@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     member do
       get 'start'
       get 'check'
+      get 'real_human'
     end
   end
 
