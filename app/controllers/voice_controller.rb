@@ -20,7 +20,7 @@ class VoiceController < ApplicationController
   def check
     return redirect_to start_voice_path unless params['Digits'] == "1234"
     response = Twilio::TwiML::Response.new do |response|
-      response.Play '/public/dial_tone_9_long.mp3'
+      response.Play '/mp3/dial_tone_9_long.mp3'
     end
 
     render_twiml response
