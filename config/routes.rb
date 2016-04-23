@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   # Example resource route (maps HTTP verbs to controller actions automatically):
   resource :voice, only: [], controller: 'voice' do
     member do
-      get 'start'
+      post 'start'
       get 'check'
     end
   end
