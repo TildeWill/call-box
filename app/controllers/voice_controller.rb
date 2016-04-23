@@ -9,7 +9,7 @@ class VoiceController < ApplicationController
     response = Twilio::TwiML::Response.new do |response|
       # response.Say "Hello?", :voice => 'alice'
       # response.Say "Okay, I'll buzz you in!", :voice => 'alice'
-      response.Gather :numDigits => '4', :action => check_voices_path, :method => 'get' do |g|
+      response.Gather :numDigits => '4', :action => check_voice_path, :method => 'get' do |g|
         g.Say 'Please enter your four digit code'
       end
       response.Play 'http://linode.rabasa.com/cantina.mp3'
