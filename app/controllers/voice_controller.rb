@@ -8,7 +8,7 @@ class VoiceController < ApplicationController
   def start
     response = Twilio::TwiML::Response.new do |response|
       response.Gather(numDigits: '4', timeout: '10', action: check_voice_path, method: 'get') do |gather|
-        gather.Say "Please enter your four digit code, or please stay on the line", voice: 'alice'
+        gather.Say "Please enter your four digit code, or please stay on the line", voice: 'woman'
       end
       response.Redirect(real_human_voice_path, method: 'get')
     end
@@ -19,10 +19,10 @@ class VoiceController < ApplicationController
   def check
     response = Twilio::TwiML::Response.new do |response|
       if code = Code.find_by_code(params['Digits'])
-        response.Say("Thank you #{code.name}!", voice: 'alice')
+        response.Say("Thank you #{code.name}!", voice: 'woman')
         response.Play(digits: "ww99999")
       else
-        response.Say("The code you entered, #{params['Digits']}, is not valid.", voice: 'alice')
+        response.Say("The code you entered, #{params['Digits']}, is not valid.", voice: 'woman')
         response.Redirect(start_voice_path, method: 'get')
       end
     end
