@@ -13,7 +13,7 @@ class VoiceController < ApplicationController
       response.Gather(numDigits: '4', timeout: '10', action: check_voice_path, method: 'get') do |g|
         g.Say 'Please enter your four digit code', voice: 'alice'
       end
-      response.Redirect(real_human_path, method: 'get') # let them get patched through to Will's cell
+      response.Redirect(real_human_voice_path, method: 'get') # let them get patched through to Will's cell
     end
 
     render_twiml response
