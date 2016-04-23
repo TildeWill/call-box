@@ -8,14 +8,13 @@ class VoiceController < ApplicationController
   def start
     response = Twilio::TwiML::Response.new do |response|
       if(params["Caller"].include?(WILLS_CELL.gsub("-", '')))
-        response.Redirect(real_human_voice_path, method: 'get')
-      else
         response.Gather(numDigits: '4', timeout: '10', action: check_voice_path, method: 'get') do |gather|
           gather.Say "Please enter your four digit code, or please stay on the line", voice: 'woman'
         end
         response.Redirect(real_human_voice_path, method: 'get')
+      else
+        response.Redirect(real_human_voice_path, method: 'get')
       end
-
     end
 
     render_twiml response
