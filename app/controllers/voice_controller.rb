@@ -24,7 +24,7 @@ class VoiceController < ApplicationController
     response = Twilio::TwiML::Response.new do |response|
       if code = Code.find_by_code(params['Digits'])
         response.Say("Thank you #{code.name}!", voice: 'woman')
-        response.Play(digits: "ww99999")
+        response.Play(digits: "99999")
       else
         response.Say("The code you entered, #{params['Digits']}, is not valid.", voice: 'woman')
         response.Redirect(start_voice_path, method: 'get')
