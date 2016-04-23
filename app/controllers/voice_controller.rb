@@ -20,7 +20,7 @@ class VoiceController < ApplicationController
 
   def check
     p "!!!!!!!!!!!!!!!!", params['Digits']
-    return redirect_to start_voice_path unless params['Digits'] == ['1', '2', '3', '4']
+    return redirect_to start_voice_path unless params['Digits'] == "1234"
     response = Twilio::TwiML::Response.new do |response|
       response.Say 'Record your monkey howl after the tone.'
       # r.Record :maxLength => '30', :action => '/hello-monkey/handle-record', :method => 'get'
