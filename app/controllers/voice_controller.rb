@@ -7,10 +7,12 @@ class VoiceController < ApplicationController
 
   def start
     response = Twilio::TwiML::Response.new do |response|
-      # response.Say "Hello?", :voice => 'alice'
-      # response.Say "Okay, I'll buzz you in!", :voice => 'alice'
+      # check if window, buzz in if so
+      # else prompty for code
+      # let them get patched through to Will's cell
+
       response.Gather :numDigits => '4', :action => check_voice_path, :method => 'get' do |g|
-        g.Say 'Please enter your four digit code'
+        g.Say 'Please enter your four digit code', voice: 'alice'
       end
     end
 
