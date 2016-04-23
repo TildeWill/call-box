@@ -6,9 +6,11 @@ class CallBoxCallsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def create
-    response = Twilio::TwiML::Response.new do |r|
-      r.Say 'Hey there. Congrats on integrating Twilio into your Rails 4 app.', :voice => 'alice'
-      r.Play 'http://linode.rabasa.com/cantina.mp3'
+    response = Twilio::TwiML::Response.new do |response|
+      response.Say "Hello?", :voice => 'alice'
+      response.Say "Okay, I'll buzz you in!", :voice => 'alice'
+      
+      response.Play 'http://linode.rabasa.com/cantina.mp3'
     end
 
     render_twiml response
