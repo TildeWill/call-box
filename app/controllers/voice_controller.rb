@@ -12,18 +12,15 @@ class VoiceController < ApplicationController
       response.Gather :numDigits => '4', :action => check_voice_path, :method => 'get' do |g|
         g.Say 'Please enter your four digit code'
       end
-      response.Play 'http://linode.rabasa.com/cantina.mp3'
     end
 
     render_twiml response
   end
 
   def check
-    p "!!!!!!!!!!!!!!!!", params['Digits']
     return redirect_to start_voice_path unless params['Digits'] == "1234"
     response = Twilio::TwiML::Response.new do |response|
-      response.Say 'Record your monkey howl after the tone.'
-      # r.Record :maxLength => '30', :action => '/hello-monkey/handle-record', :method => 'get'
+      response.Play 'http://www.soundsnap.com/files/tmp-stream/1461395280/09/transcode/Telephone%20tone-%20dial%209%20long.mp3'
     end
 
     render_twiml response
