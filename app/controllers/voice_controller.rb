@@ -1,36 +1,36 @@
 class VoiceController < ApplicationController
   include Webhookable
-
   after_filter :set_header
-
   skip_before_action :verify_authenticity_token
+
+  WILLS_CELL = "415-894-9455"
 
   def start
     response = Twilio::TwiML::Response.new do |response|
-      # check if window, buzz in if so
-
-      # else prompt for code
       response.Gather(numDigits: '4', timeout: '10', action: check_voice_path, method: 'get') do |g|
-        g.Say 'Please enter your four digit code', voice: 'alice'
+        g.Say "Please enter your four digit code, or please stay on the line", voice: 'alice'
       end
-      response.Redirect(real_human_voice_path, method: 'get') # let them get patched through to Will's cell
+      response.Redirect(real_human_voice_path, method: 'get')
     end
 
     render_twiml response
   end
 
   def check
-    return redirect_to start_voice_path unless params['Digits'] == "1234"
-    response = Twilio::TwiML::Response.new do |response|
-      response.Play(digits:"wwww99999")
-    end
+    response = Twilio::TwiML::Response.new
 
+    if params['Digits'] == "1234"
+      response.Play(digits:"wwww99999")
+    else
+      response.Say("The code you entered, #{paprams['Digits']}, is not valid, please try again.", voice: 'alice')
+      response.Redirect(start_voice_path, method: 'get')
+    end
     render_twiml response
   end
 
   def real_human
     response = Twilio::TwiML::Response.new do |response|
-      response.Dial("415-894-9455")
+      response.Dial(WILLS_CELL)
     end
 
     render_twiml response
