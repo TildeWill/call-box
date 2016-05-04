@@ -3,8 +3,6 @@ class VoiceController < ApplicationController
   after_filter :set_header
   skip_before_action :verify_authenticity_token
 
-  WILLS_CELL = "415-894-9455"
-
   def start
     response = Twilio::TwiML::Response.new do |response|
       response.Gather(numDigits: '4', timeout: '10', action: check_voice_path, method: 'get') do |gather|
@@ -20,7 +18,7 @@ class VoiceController < ApplicationController
     response = Twilio::TwiML::Response.new do |response|
       if code = Code.find_by_code(params['Digits'])
         response.Say("Thank you #{code.name}!", voice: 'woman')
-        response.Play(digits: "99999")
+        response.Play(digits: ENV['BUZZ_KEYS'])
       else
         response.Say("The code you entered, #{params['Digits']}, is not valid.", voice: 'woman')
         response.Redirect(start_voice_path, method: 'get')
@@ -31,7 +29,7 @@ class VoiceController < ApplicationController
 
   def real_human
     response = Twilio::TwiML::Response.new do |response|
-      response.Dial(WILLS_CELL)
+      response.Dial(ENV['FALL_THROUGH_PHONE_NUMBER'])
     end
 
     render_twiml response
